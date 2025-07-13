@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { use } from "react";
 
-export default async function PassengerReservationsPage({
+export default function PassengerReservationsPage({
   params,
 }: {
   params: Promise<{ userId: string }>;

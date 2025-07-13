@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { use } from "react";
 
-export default async function PassengerProfilePage({
+export default function PassengerProfilePage({
   params,
 }: {
   params: Promise<{ userId: string }>;
