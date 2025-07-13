@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { use } from "react";
 
-export default async function DriverProfilePage({
+export default function DriverProfilePage({
   params,
 }: {
   params: Promise<{ userId: string }>;
