@@ -1,7 +1,9 @@
 "use client";
 /* eslint-disable react/no-unescaped-entities */
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -13,16 +15,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Car, Eye, EyeOff } from "lucide-react";
-import { login } from "@/app/actions/auth";
-import { redirect } from "next/navigation";
-import { getSession } from "@/app/actions/auth";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-// Si l'utilisateur est déjà connecté, on le redirige automatiquement
 export default function LoginPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,9 +34,7 @@ export default function LoginPage() {
     try {
       const response = await fetch("/api/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
@@ -51,9 +46,8 @@ export default function LoginPage() {
         return;
       }
 
-      // Si connexion réussie, rediriger vers le tableau de bord
       router.push(data.redirectUrl);
-    } catch (err) {
+    } catch {
       setError("Une erreur est survenue lors de la connexion");
       setIsLoading(false);
     }
@@ -80,6 +74,7 @@ export default function LoginPage() {
                 {error}
               </div>
             )}
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -90,16 +85,31 @@ export default function LoginPage() {
                 required
               />
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="password">Mot de passe</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-2 flex items-center"
+                  onClick={() => setShowPassword((v) => !v)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <Eye className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
+              </div>
             </div>
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Connexion en cours..." : "Se connecter"}
             </Button>
@@ -111,8 +121,9 @@ export default function LoginPage() {
               S'inscrire
             </Link>
           </div>
+
           <div className="mt-4 text-xs text-gray-500 text-center">
-            <p>Demo : utilisez "driver@test.com" pour un compte chauffeur</p>
+            <p>Demo : utilisez "driver@test.com" pour un compte chauffeur</p>
             <p>ou "passenger@test.com" pour un compte passager</p>
           </div>
         </CardContent>
