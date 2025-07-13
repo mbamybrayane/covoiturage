@@ -30,6 +30,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Calendar, Users, Euro, Loader2, Check } from "lucide-react";
 import { createTrip } from "@/app/actions/trips";
+import { use } from "react";
 
 // Type pour les suggestions de l'API OpenCage Geocoder
 interface GeocodeSuggestion {
@@ -43,8 +44,9 @@ interface GeocodeSuggestion {
 export default function CreateTripPage({
   params,
 }: {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
 }) {
+  const { userId } = use(params);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -218,9 +220,9 @@ export default function CreateTripPage({
       return;
     }
     try {
-      const res = await createTrip(tripData, params.userId);
+      const res = await createTrip(tripData, userId);
       if (res.success) {
-        router.push(`/dashboard/driver/${params.userId}/trips`);
+        router.push(`/dashboard/driver/${userId}/trips`);
       } else {
         setError(res.message || "Erreur lors de la création du trajet");
       }
@@ -235,7 +237,7 @@ export default function CreateTripPage({
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full">
-        <DriverSidebar userId={params.userId} />
+        <DriverSidebar userId={userId} />
         <SidebarInset className="flex-1">
           <header className="flex h-16 items-center gap-2 border-b px-4">
             <SidebarTrigger />
@@ -243,15 +245,13 @@ export default function CreateTripPage({
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href={`/dashboard/driver/${params.userId}`}>
+                  <BreadcrumbLink href={`/dashboard/driver/${userId}`}>
                     Dashboard
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink
-                    href={`/dashboard/driver/${params.userId}/trips`}
-                  >
+                  <BreadcrumbLink href={`/dashboard/driver/${userId}/trips`}>
                     Mes trajets
                   </BreadcrumbLink>
                 </BreadcrumbItem>

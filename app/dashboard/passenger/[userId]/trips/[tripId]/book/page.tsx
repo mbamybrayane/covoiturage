@@ -1,9 +1,11 @@
+import { use } from "react";
 import BookTripClientPage from "./BookTripClientPage";
 
 export default function Page({
   params,
 }: {
-  params: { userId: string; tripId: string };
+  params: Promise<{ userId: string; tripId: string }>;
 }) {
-  return <BookTripClientPage userId={params.userId} tripId={params.tripId} />;
+  const { userId, tripId } = use(params);
+  return <BookTripClientPage userId={userId} tripId={tripId} />;
 }

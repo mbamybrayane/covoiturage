@@ -16,13 +16,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { use } from "react";
 
-interface DriverTripsPageProps {
-  params: { userId: string };
-}
-
-export default function DriverTripsPage({ params }: DriverTripsPageProps) {
-  const { userId } = params;
+export default function DriverTripsPage({
+  params,
+}: {
+  params: Promise<{ userId: string }>;
+}) {
+  const { userId } = use(params);
 
   return (
     <SidebarProvider>

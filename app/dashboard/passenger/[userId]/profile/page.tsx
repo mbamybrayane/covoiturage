@@ -16,13 +16,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { use } from "react";
 
 export default async function PassengerProfilePage({
   params,
 }: {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
 }) {
-  const { userId } = await params;
+  const { userId } = use(params);
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full">
