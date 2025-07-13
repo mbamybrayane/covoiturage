@@ -1,6 +1,8 @@
 // app/auth/login/page.tsx
+"use client";
 /* eslint-disable react/no-unescaped-entities */
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   Card,
@@ -14,19 +16,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Car, Eye, EyeOff } from "lucide-react";
 import { login } from "@/app/actions/auth";
-import { redirect } from "next/navigation";
-import { getSession } from "@/app/actions/auth";
 
-// Si l'utilisateur est déjà connecté, on le redirige automatiquement
-export default async function LoginPage() {
-  const session = await getSession();
-  if (session) {
-    const home = session.isDriver
-      ? `/dashboard/driver/${session.id}`
-      : `/dashboard/passenger/${session.id}`;
-    redirect(home);
-  }
+export default function LoginPage() {
+  const [showPassword, setShowPassword] = useState(false);
 
+  // Cette fonction est envoyée au server via le form
   async function handleLogin(formData: FormData) {
     "use server";
     await login({
@@ -61,16 +55,31 @@ export default async function LoginPage() {
                 required
               />
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="password">Mot de passe</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <Eye className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
+              </div>
             </div>
+
             <Button type="submit" className="w-full">
               Se connecter
             </Button>
@@ -83,7 +92,7 @@ export default async function LoginPage() {
             </Link>
           </div>
           <div className="mt-4 text-xs text-gray-500 text-center">
-            <p>Demo : utilisez "driver@test.com" pour un compte chauffeur</p>
+            <p>Demo : utilisez "driver@test.com" pour un compte chauffeur</p>
             <p>ou "passenger@test.com" pour un compte passager</p>
           </div>
         </CardContent>
