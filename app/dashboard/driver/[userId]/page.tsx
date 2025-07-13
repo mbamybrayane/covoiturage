@@ -1,13 +1,13 @@
 // app/dashboard/driver/[userId]/page.tsx
 
+import { use } from "react";
 import DriverDashboardClient from "./DriverDashboardClient";
 
 export default function DriverDashboardPage({
   params,
 }: {
-  params: {
-    userId: string;
-  };
+  params: Promise<{ userId: string }>;
 }) {
-  return <DriverDashboardClient userId={params.userId} />;
+  const { userId } = use(params);
+  return <DriverDashboardClient userId={userId} />;
 }
