@@ -14,6 +14,13 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Users, Plus, Edit, Trash2 } from "lucide-react";
 import { getDriverTrips, deleteTrip } from "@/app/actions/trips";
 
+interface Booking {
+  id: string;
+  userId: string;
+  seats: number;
+  status: string;
+}
+
 interface Trip {
   id: string;
   departureCity: string;
@@ -23,7 +30,7 @@ interface Trip {
   availableSeats: number;
   pricePerSeat: number;
   status: "ACTIVE" | "COMPLETED" | "CANCELLED";
-  bookings: Array<any>;
+  bookings: Booking[];
 }
 
 interface DriverTripsProps {
@@ -228,7 +235,7 @@ export function DriverTrips({ userId }: DriverTripsProps) {
             <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">Aucun trajet</h3>
             <p className="text-muted-foreground mb-4">
-              Vous n'avez pas encore créé de trajet.
+              Vous n&apos;avez pas encore créé de trajet.
             </p>
             <Link href={`/dashboard/driver/${userId}/trips/new`}>
               <Button>

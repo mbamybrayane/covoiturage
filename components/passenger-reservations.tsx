@@ -322,7 +322,7 @@ export function PassengerReservations({ userId }: PassengerReservationsProps) {
             <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">Aucune réservation</h3>
             <p className="text-muted-foreground mb-4">
-              Vous n'avez pas encore effectué de réservation.
+              Vous n&apos;avez pas encore effectué de réservation.
             </p>
             <Link href={`/dashboard/passenger/${userId}/trips`}>
               <Button>

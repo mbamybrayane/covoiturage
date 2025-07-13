@@ -1,44 +1,52 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { User, Edit, Save, X } from "lucide-react"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { User, Edit, Save, X } from "lucide-react";
 
 interface PassengerProfileProps {
-  userId: string
+  userId: string;
 }
 
-export function PassengerProfile({ userId }: PassengerProfileProps) {
-  const [isEditing, setIsEditing] = useState(false)
+export function PassengerProfile({ userId: _userId }: PassengerProfileProps) {
+  const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
     firstName: "Marie",
     lastName: "Martin",
     email: "marie.martin@email.com",
     phone: "+33 6 98 76 54 32",
     avatar: "/placeholder.svg?height=100&width=100",
-  })
+  });
 
   const handleSave = () => {
     // Ici vous feriez l'appel API pour sauvegarder
-    setIsEditing(false)
-  }
+    setIsEditing(false);
+  };
 
   const handleCancel = () => {
     // Reset des changements
-    setIsEditing(false)
-  }
+    setIsEditing(false);
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Mon Profil</h1>
-          <p className="text-muted-foreground">Gérez vos informations personnelles</p>
+          <p className="text-muted-foreground">
+            Gérez vos informations personnelles
+          </p>
         </div>
         {!isEditing ? (
           <Button onClick={() => setIsEditing(true)}>
@@ -73,17 +81,25 @@ export function PassengerProfile({ userId }: PassengerProfileProps) {
           <CardContent className="space-y-4">
             <div className="flex items-center space-x-4">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={profile.avatar || "/placeholder.svg"} alt="Avatar" />
+                <AvatarImage
+                  src={profile.avatar || "/placeholder.svg"}
+                  alt="Avatar"
+                />
                 <AvatarFallback>
                   {profile.firstName[0]}
                   {profile.lastName[0]}
                 </AvatarFallback>
               </Avatar>
               <div className="space-y-1">
-                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                <Badge
+                  variant="secondary"
+                  className="bg-blue-100 text-blue-800"
+                >
                   Passager vérifié
                 </Badge>
-                <p className="text-sm text-muted-foreground">Membre depuis janvier 2024</p>
+                <p className="text-sm text-muted-foreground">
+                  Membre depuis janvier 2024
+                </p>
               </div>
             </div>
 
@@ -93,7 +109,9 @@ export function PassengerProfile({ userId }: PassengerProfileProps) {
                 <Input
                   id="firstName"
                   value={profile.firstName}
-                  onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+                  onChange={(e) =>
+                    setProfile({ ...profile, firstName: e.target.value })
+                  }
                   disabled={!isEditing}
                 />
               </div>
@@ -102,7 +120,9 @@ export function PassengerProfile({ userId }: PassengerProfileProps) {
                 <Input
                   id="lastName"
                   value={profile.lastName}
-                  onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+                  onChange={(e) =>
+                    setProfile({ ...profile, lastName: e.target.value })
+                  }
                   disabled={!isEditing}
                 />
               </div>
@@ -114,7 +134,9 @@ export function PassengerProfile({ userId }: PassengerProfileProps) {
                 id="email"
                 type="email"
                 value={profile.email}
-                onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                onChange={(e) =>
+                  setProfile({ ...profile, email: e.target.value })
+                }
                 disabled={!isEditing}
               />
             </div>
@@ -124,7 +146,9 @@ export function PassengerProfile({ userId }: PassengerProfileProps) {
               <Input
                 id="phone"
                 value={profile.phone}
-                onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                onChange={(e) =>
+                  setProfile({ ...profile, phone: e.target.value })
+                }
                 disabled={!isEditing}
               />
             </div>
@@ -132,5 +156,5 @@ export function PassengerProfile({ userId }: PassengerProfileProps) {
         </Card>
       </div>
     </div>
-  )
+  );
 }
