@@ -28,7 +28,6 @@ export async function POST(request: Request) {
     const user = await prisma.user.findUnique({
       where: { email: email.toLowerCase().trim() },
     });
-
     if (!user) {
       return NextResponse.json(
         { success: false, message: "Email ou mot de passe incorrect" },
@@ -46,7 +45,7 @@ export async function POST(request: Request) {
 
     // Créer la session
     const sessionId = crypto.randomUUID();
-    const cookieStore = cookies();  // synchronique, ne pas faire await
+    const cookieStore = await cookies(); // <-- Remettre l'await
 
     cookieStore.set("session_id", sessionId, {
       httpOnly: true,
@@ -79,7 +78,10 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Erreur d'authentification:", error);
     return NextResponse.json(
-      { success: false, message: "Une erreur est survenue lors de la connexion" },
+      {
+        success: false,
+        message: "Une erreur est survenue lors de la connexion",
+      },
       { status: 500 }
     );
   }
