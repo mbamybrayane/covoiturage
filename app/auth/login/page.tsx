@@ -1,8 +1,6 @@
-// app/auth/login/page.tsx
 "use client";
 /* eslint-disable react/no-unescaped-entities */
 
-import { useState } from "react";
 import Link from "next/link";
 import {
   Card,
@@ -16,18 +14,50 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Car, Eye, EyeOff } from "lucide-react";
 import { login } from "@/app/actions/auth";
+import { redirect } from "next/navigation";
+import { getSession } from "@/app/actions/auth";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
+// Si l'utilisateur est déjà connecté, on le redirige automatiquement
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  // Cette fonction est envoyée au server via le form
-  async function handleLogin(formData: FormData) {
-    "use server";
-    await login({
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    });
-  }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        setError(data.message || "Erreur de connexion");
+        setIsLoading(false);
+        return;
+      }
+
+      // Si connexion réussie, rediriger vers le tableau de bord
+      router.push(data.redirectUrl);
+    } catch (err) {
+      setError("Une erreur est survenue lors de la connexion");
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-4">
@@ -44,7 +74,12 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent>
-          <form action={handleLogin} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="p-3 rounded-md bg-red-50 text-red-600 text-sm mb-4">
+                {error}
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -55,33 +90,18 @@ export default function LoginPage() {
                 required
               />
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="password">Mot de passe</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  required
-                />
-                <button
-                  type="button"
-                  className="absolute right-2 top-1/2 -translate-y-1/2"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-500" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-500" />
-                  )}
-                </button>
-              </div>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="••••••••"
+                required
+              />
             </div>
-
-            <Button type="submit" className="w-full">
-              Se connecter
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Connexion en cours..." : "Se connecter"}
             </Button>
           </form>
 
@@ -92,7 +112,7 @@ export default function LoginPage() {
             </Link>
           </div>
           <div className="mt-4 text-xs text-gray-500 text-center">
-            <p>Demo : utilisez "driver@test.com" pour un compte chauffeur</p>
+            <p>Demo : utilisez "driver@test.com" pour un compte chauffeur</p>
             <p>ou "passenger@test.com" pour un compte passager</p>
           </div>
         </CardContent>

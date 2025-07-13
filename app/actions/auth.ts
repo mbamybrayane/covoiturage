@@ -41,9 +41,11 @@ export async function login(data: LoginData) {
     };
   }
 
+  let user;
+
   // Recherche de l'utilisateur et vérification du mot de passe
   try {
-    const user = await prisma.user.findUnique({
+    user = await prisma.user.findUnique({
       where: { email: data.email.toLowerCase().trim() },
     });
 
@@ -82,12 +84,6 @@ export async function login(data: LoginData) {
         path: "/",
       }
     );
-
-    // Redirection vers le tableau de bord approprié
-    const redirectPath = user.isDriver
-      ? `/dashboard/driver/${user.id}/`
-      : `/dashboard/passenger/${user.id}/`;
-    redirect(redirectPath);
   } catch (error) {
     console.error("Erreur d'authentification :", error);
     return {
@@ -95,6 +91,13 @@ export async function login(data: LoginData) {
       message: "Une erreur est survenue lors de la connexion",
     };
   }
+
+  // Redirection hors du bloc try/catch pour ne pas capturer NEXT_REDIRECT
+  const redirectPath = user.isDriver
+    ? `/dashboard/driver/${user.id}/`
+    : `/dashboard/passenger/${user.id}/`;
+
+  redirect(redirectPath);
 }
 
 // Fonction pour valider le format de l'email
