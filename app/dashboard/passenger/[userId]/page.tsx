@@ -32,11 +32,11 @@ import {
   Search,
 } from "lucide-react";
 
-export default async function PassengerDashboard({
-  params,
-}: {
-  params: { userId: string };
-}) {
+interface PageParams {
+  userId: string;
+}
+
+export default function PassengerDashboard({ params }: { params: PageParams }) {
   const { userId } = params;
   // Mock data - statistiques du passager
   const stats = {

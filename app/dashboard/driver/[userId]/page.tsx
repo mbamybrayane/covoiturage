@@ -25,11 +25,11 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Car, Users, Calendar, TrendingUp, Euro, MapPin } from "lucide-react";
 
-export default async function DriverDashboard({
-  params,
-}: {
-  params: { userId: string };
-}) {
+interface PageParams {
+  userId: string;
+}
+
+export default function DriverDashboard({ params }: { params: PageParams }) {
   const { userId } = params;
   // Mock data - statistiques du chauffeur
   const stats = {
