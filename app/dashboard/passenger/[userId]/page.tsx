@@ -1,6 +1,9 @@
-// app/dashboard/passenger/[userId]/page.tsx
 import PassengerDashboardClient from "./PassengerDashboardClient";
 
-export default function Page({ params }: { params: { userId: string } }) {
+interface PageParams {
+  params: { userId: string };
+}
+
+export default function PassengerDashboardPage({ params }: PageParams) {
   return <PassengerDashboardClient userId={params.userId} />;
 }
