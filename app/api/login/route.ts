@@ -1,3 +1,4 @@
+// app/api/login/route.ts
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { cookies } from "next/headers";
@@ -7,10 +8,8 @@ const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   try {
-    // Récupérer les données du corps de la requête
     const { email, password } = await request.json();
 
-    // Validation des données
     if (!email || !password) {
       return NextResponse.json(
         { success: false, message: "Veuillez remplir tous les champs" },
@@ -18,7 +17,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Vérifier le format de l'email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -27,12 +25,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // Rechercher l'utilisateur
     const user = await prisma.user.findUnique({
       where: { email: email.toLowerCase().trim() },
     });
 
-    // Vérifier si l'utilisateur existe
     if (!user) {
       return NextResponse.json(
         { success: false, message: "Email ou mot de passe incorrect" },
@@ -40,7 +36,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Vérifier le mot de passe
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       return NextResponse.json(
@@ -49,15 +44,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // Créer une session
+    // Créer la session
     const sessionId = crypto.randomUUID();
-    const cookieStore = await cookies();
+    const cookieStore = cookies();  // synchronique, ne pas faire await
 
-    // Définir les cookies
     cookieStore.set("session_id", sessionId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 7, // 1 semaine
+      maxAge: 60 * 60 * 24 * 7,
       path: "/",
     });
 
@@ -77,23 +71,15 @@ export async function POST(request: Request) {
       }
     );
 
-    // Déterminer l'URL de redirection
     const redirectUrl = user.isDriver
       ? `/dashboard/driver/${user.id}/`
       : `/dashboard/passenger/${user.id}/`;
 
-    // Retourner une réponse réussie avec l'URL de redirection
-    return NextResponse.json({
-      success: true,
-      redirectUrl,
-    });
+    return NextResponse.json({ success: true, redirectUrl });
   } catch (error) {
     console.error("Erreur d'authentification:", error);
     return NextResponse.json(
-      {
-        success: false,
-        message: "Une erreur est survenue lors de la connexion",
-      },
+      { success: false, message: "Une erreur est survenue lors de la connexion" },
       { status: 500 }
     );
   }
