@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  firstName     String
+  lastName      String
+  phone         String?
+  avatar        String?
+  isDriver      Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  password      String
+
+  // Relations
+  driverProfile DriverProfile?
+  trips         Trip[]          // Relation on Trip.driver with cascade
+  bookings      Booking[]       // Relation on Booking.user with cascade
+
+  @@map("users")
+}
+
+model DriverProfile {
+  id           String @id @default(cuid())
+  userId       String @unique
+  vehicleBrand String
+  vehicleModel String
+  vehicleColor String
+  licensePlate String
+  defaultRate  Float
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("driver_profiles")
+}
+
+model Trip {
+  id              String        @id @default(cuid())
+  driverId        String
+  departureCity   String
+  arrivalCity     String
+  departureCoords String        // "lat,lng"
+  arrivalCoords   String        // "lat,lng"
+  departureDate   DateTime
+  departureTime   String
+  availableSeats  Int
+  pricePerSeat    Float
+  description     String?
+  status          TripStatus    @default(ACTIVE)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relations
+  driver   User      @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  bookings Booking[] // Relation on Booking.trip with cascade
+
+  @@map("trips")
+}
+
+model Booking {
+  id         String        @id @default(cuid())
+  tripId     String
+  userId     String
+  seats      Int
+  totalPrice Float
+  status     BookingStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  // Relations
+  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("bookings")
+}
+
+enum TripStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
