@@ -1,10 +1,20 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { PassengerSidebar } from "@/components/passenger-sidebar"
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { PassengerSidebar } from "@/components/passenger-sidebar";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,11 +22,22 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Users, Calendar, MapPin, Euro, TrendingUp, Search } from "lucide-react"
+} from "@/components/ui/breadcrumb";
+import {
+  Users,
+  Calendar,
+  MapPin,
+  Euro,
+  TrendingUp,
+  Search,
+} from "lucide-react";
 
-export default async function PassengerDashboard({ params }: { params: { userId: string } }) {
-  const { userId } = await params;
+export default async function PassengerDashboard({
+  params,
+}: {
+  params: { userId: string };
+}) {
+  const { userId } = params;
   // Mock data - statistiques du passager
   const stats = {
     totalTrips: 12,
@@ -27,7 +48,7 @@ export default async function PassengerDashboard({ params }: { params: { userId:
     confirmedReservations: 2,
     completedTrips: 9,
     thisMonthTrips: 3,
-  }
+  };
 
   const upcomingTrips = [
     {
@@ -48,7 +69,7 @@ export default async function PassengerDashboard({ params }: { params: { userId:
       price: 30,
       status: "PENDING",
     },
-  ]
+  ];
 
   return (
     <SidebarProvider>
@@ -73,53 +94,79 @@ export default async function PassengerDashboard({ params }: { params: { userId:
 
           <div className="p-6 space-y-6">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Tableau de bord</h1>
-              <p className="text-muted-foreground">Aperçu de votre activité de passager</p>
+              <h1 className="text-3xl font-bold tracking-tight">
+                Tableau de bord
+              </h1>
+              <p className="text-muted-foreground">
+                Aperçu de votre activité de passager
+              </p>
             </div>
 
             {/* Statistiques principales */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Trajets effectués</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Trajets effectués
+                  </CardTitle>
                   <MapPin className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{stats.totalTrips}</div>
-                  <p className="text-xs text-muted-foreground">+{stats.thisMonthTrips} ce mois-ci</p>
+                  <p className="text-xs text-muted-foreground">
+                    +{stats.thisMonthTrips} ce mois-ci
+                  </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total dépensé</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Total dépensé
+                  </CardTitle>
                   <Euro className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stats.totalSpent} FCFA</div>
-                  <p className="text-xs text-muted-foreground">Économies réalisées</p>
+                  <div className="text-2xl font-bold">
+                    {stats.totalSpent} FCFA
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Économies réalisées
+                  </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Destination favorite</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Destination favorite
+                  </CardTitle>
                   <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stats.favoriteDestination}</div>
-                  <p className="text-xs text-muted-foreground">5 trajets vers cette ville</p>
+                  <div className="text-2xl font-bold">
+                    {stats.favoriteDestination}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    5 trajets vers cette ville
+                  </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Note moyenne</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Note moyenne
+                  </CardTitle>
                   <TrendingUp className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stats.averageRating}/5</div>
-                  <p className="text-xs text-muted-foreground">⭐ Excellent passager</p>
+                  <div className="text-2xl font-bold">
+                    {stats.averageRating}/5
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    ⭐ Excellent passager
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -129,12 +176,17 @@ export default async function PassengerDashboard({ params }: { params: { userId:
               <Card>
                 <CardHeader>
                   <CardTitle>Réservations en cours</CardTitle>
-                  <CardDescription>Vos prochains trajets programmés</CardDescription>
+                  <CardDescription>
+                    Vos prochains trajets programmés
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {upcomingTrips.map((trip) => (
-                      <div key={trip.id} className="flex items-center justify-between">
+                      <div
+                        key={trip.id}
+                        className="flex items-center justify-between"
+                      >
                         <div className="space-y-1">
                           <div className="flex items-center gap-2 text-sm">
                             <MapPin className="h-3 w-3 text-muted-foreground" />
@@ -144,12 +196,16 @@ export default async function PassengerDashboard({ params }: { params: { userId:
                           </div>
                           <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             <Calendar className="h-3 w-3" />
-                            <span>{new Date(trip.date).toLocaleDateString("fr-FR")}</span>
+                            <span>
+                              {new Date(trip.date).toLocaleDateString("fr-FR")}
+                            </span>
                             <span>avec {trip.driver}</span>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-sm font-medium text-green-600">{trip.price}FCFA</p>
+                          <p className="text-sm font-medium text-green-600">
+                            {trip.price}FCFA
+                          </p>
                           <Badge
                             variant="outline"
                             className={
@@ -158,7 +214,9 @@ export default async function PassengerDashboard({ params }: { params: { userId:
                                 : "bg-yellow-50 text-yellow-700"
                             }
                           >
-                            {trip.status === "CONFIRMED" ? "Confirmé" : "En attente"}
+                            {trip.status === "CONFIRMED"
+                              ? "Confirmé"
+                              : "En attente"}
                           </Badge>
                         </div>
                       </div>
@@ -170,23 +228,32 @@ export default async function PassengerDashboard({ params }: { params: { userId:
               <Card>
                 <CardHeader>
                   <CardTitle>Actions rapides</CardTitle>
-                  <CardDescription>Raccourcis vers vos actions fréquentes</CardDescription>
+                  <CardDescription>
+                    Raccourcis vers vos actions fréquentes
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                       <div className="flex items-center gap-2">
                         <Search className="h-4 w-4 text-blue-600" />
-                        <span className="text-sm font-medium">Rechercher un trajet</span>
+                        <span className="text-sm font-medium">
+                          Rechercher un trajet
+                        </span>
                       </div>
                       <Badge variant="secondary">Nouveau</Badge>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-purple-600" />
-                        <span className="text-sm font-medium">Mes réservations</span>
+                        <span className="text-sm font-medium">
+                          Mes réservations
+                        </span>
                       </div>
-                      <Badge variant="outline">{stats.pendingReservations + stats.confirmedReservations}</Badge>
+                      <Badge variant="outline">
+                        {stats.pendingReservations +
+                          stats.confirmedReservations}
+                      </Badge>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
                       <div className="flex items-center gap-2">
@@ -203,5 +270,5 @@ export default async function PassengerDashboard({ params }: { params: { userId:
         </SidebarInset>
       </div>
     </SidebarProvider>
-  )
+  );
 }

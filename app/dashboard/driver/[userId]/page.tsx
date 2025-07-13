@@ -25,11 +25,12 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Car, Users, Calendar, TrendingUp, Euro, MapPin } from "lucide-react";
 
-export default function DriverDashboard({
+export default async function DriverDashboard({
   params,
 }: {
   params: { userId: string };
 }) {
+  const { userId } = params;
   // Mock data - statistiques du chauffeur
   const stats = {
     totalTrips: 24,
@@ -66,7 +67,7 @@ export default function DriverDashboard({
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full">
-        <DriverSidebar userId={params.userId} />
+        <DriverSidebar userId={userId} />
         <SidebarInset className="flex-1">
           <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />

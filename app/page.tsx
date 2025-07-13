@@ -1,7 +1,15 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Car, Users, MapPin, Shield } from "lucide-react"
+/* eslint-disable react/no-unescaped-entities */
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Car, Users, MapPin, Shield } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -32,7 +40,8 @@ export default function HomePage() {
             <span className="text-blue-600"> économisez plus</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Trouvez des covoiturages près de chez vous ou proposez vos trajets. Simple, sécurisé et économique.
+            Trouvez des covoiturages près de chez vous ou proposez vos trajets.
+            Simple, sécurisé et économique.
           </p>
           <div className="space-x-4">
             <Link href="/trips/search">
@@ -52,7 +61,9 @@ export default function HomePage() {
       {/* Features */}
       <section className="py-16 px-4 bg-white">
         <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Pourquoi choisir RideShare ?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Pourquoi choisir RideShare ?
+          </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="border-0 shadow-lg">
               <CardHeader className="text-center">
@@ -63,7 +74,8 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Profils vérifiés et système d'évaluation pour voyager en toute confiance
+                  Profils vérifiés et système d'évaluation pour voyager en toute
+                  confiance
                 </CardDescription>
               </CardContent>
             </Card>
@@ -77,7 +89,8 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Recherchez et réservez des trajets selon vos besoins et horaires
+                  Recherchez et réservez des trajets selon vos besoins et
+                  horaires
                 </CardDescription>
               </CardContent>
             </Card>
@@ -91,7 +104,8 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Paiement en espèces directement avec le chauffeur, simple et transparent
+                  Paiement en espèces directement avec le chauffeur, simple et
+                  transparent
                 </CardDescription>
               </CardContent>
             </Card>
@@ -99,5 +113,5 @@ export default function HomePage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

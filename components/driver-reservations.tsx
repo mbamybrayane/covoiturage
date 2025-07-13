@@ -19,7 +19,6 @@ import {
   Check,
   X,
   Loader2,
-  Search,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -357,7 +356,7 @@ export function DriverReservations({ userId }: DriverReservationsProps) {
             <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">Aucune réservation</h3>
             <p className="text-muted-foreground">
-              Vous n'avez pas encore reçu de réservations sur vos trajets.
+              Vous n&apos;avez pas encore reçu de réservations sur vos trajets.
             </p>
           </CardContent>
         </Card>

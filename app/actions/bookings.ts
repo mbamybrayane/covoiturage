@@ -1,7 +1,6 @@
 "use server";
 
 import { PrismaClient } from "@prisma/client";
-import { redirect } from "next/navigation";
 import { getSession } from "./auth";
 
 const prisma = new PrismaClient();
