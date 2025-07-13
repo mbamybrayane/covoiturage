@@ -1,7 +1,6 @@
 // app/dashboard/driver/[userId]/page.tsx
 
 import DriverDashboardClient from "./DriverDashboardClient";
-
 interface PageProps {
   params: {
     userId: string;
