@@ -17,12 +17,13 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-export default async function DriverTripsPage({
-  params,
-}: {
-  params: Promise<{ userId: string }>;
-}) {
-  const { userId } = await params;
+interface DriverTripsPageProps {
+  params: { userId: string };
+}
+
+export default function DriverTripsPage({ params }: DriverTripsPageProps) {
+  const { userId } = params;
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full">
