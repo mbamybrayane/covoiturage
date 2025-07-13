@@ -26,49 +26,81 @@ export type SignupData = {
 
 // Fonction pour se connecter
 export async function login(data: LoginData) {
-  // 1) Vérifications et logique d'authentification
-  let user;
-  try {
-    user = await prisma.user.findUnique({ where: { email: data.email } });
-    if (!user) throw new Error("INVALID_CREDENTIALS");
-
-    const passwordMatch = await bcrypt.compare(data.password, user.password);
-    if (!passwordMatch) throw new Error("INVALID_CREDENTIALS");
-  } catch (error: any) {
-    console.error("Erreur d’authentification :", error);
-    return { success: false, message: "Email ou mot de passe incorrect" };
+  // Validation des données
+  if (!data.email || !data.password) {
+    return {
+      success: false,
+      message: "Veuillez remplir tous les champs",
+    };
   }
 
-  // 2) Création de la session et stockage dans les cookies
-  const sessionId = crypto.randomUUID();
-  const cookieStore = await cookies();
-  cookieStore.set("session_id", sessionId, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 7, // 1 semaine
-    path: "/",
-  });
-  cookieStore.set(
-    "user_info",
-    JSON.stringify({
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      isDriver: user.isDriver,
-    }),
-    {
-      httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
-    }
-  );
+  if (!isValidEmail(data.email)) {
+    return {
+      success: false,
+      message: "Format d'email invalide",
+    };
+  }
 
-  // 3) Redirection hors de tout bloc try/catch pour ne pas capturer NEXT_REDIRECT
-  const redirectPath = user.isDriver
-    ? `/dashboard/driver/${user.id}/`
-    : `/dashboard/passenger/${user.id}/`;
-  redirect(redirectPath);
+  // Recherche de l'utilisateur et vérification du mot de passe
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: data.email.toLowerCase().trim() },
+    });
+
+    if (!user) {
+      return { success: false, message: "Email ou mot de passe incorrect" };
+    }
+
+    const passwordMatch = await bcrypt.compare(data.password, user.password);
+    if (!passwordMatch) {
+      return { success: false, message: "Email ou mot de passe incorrect" };
+    }
+
+    // Création de la session et stockage dans les cookies
+    const sessionId = crypto.randomUUID();
+    const cookieStore = await cookies();
+
+    cookieStore.set("session_id", sessionId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 7, // 1 semaine
+      path: "/",
+    });
+
+    cookieStore.set(
+      "user_info",
+      JSON.stringify({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        isDriver: user.isDriver,
+      }),
+      {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      }
+    );
+
+    // Redirection vers le tableau de bord approprié
+    const redirectPath = user.isDriver
+      ? `/dashboard/driver/${user.id}/`
+      : `/dashboard/passenger/${user.id}/`;
+    redirect(redirectPath);
+  } catch (error) {
+    console.error("Erreur d'authentification :", error);
+    return {
+      success: false,
+      message: "Une erreur est survenue lors de la connexion",
+    };
+  }
+}
+
+// Fonction pour valider le format de l'email
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
 
 // Fonction pour s'inscrire
@@ -93,7 +125,7 @@ export async function signup(data: SignupData) {
       },
     });
   } catch (error: any) {
-    console.error("Erreur d’inscription :", error);
+    console.error("Erreur d'inscription :", error);
     return {
       success: false,
       message:
@@ -106,12 +138,14 @@ export async function signup(data: SignupData) {
   // 2) Création de la session et stockage dans les cookies
   const sessionId = crypto.randomUUID();
   const cookieStore = await cookies();
+
   cookieStore.set("session_id", sessionId, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 24 * 7,
     path: "/",
   });
+
   cookieStore.set(
     "user_info",
     JSON.stringify({
