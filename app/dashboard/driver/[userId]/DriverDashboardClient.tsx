@@ -25,13 +25,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Car, Users, Calendar, TrendingUp, Euro, MapPin } from "lucide-react";
 
-interface DriverDashboardClientProps {
-  userId: string;
-}
-
-export default function DriverDashboardClient({
-  userId,
-}: DriverDashboardClientProps) {
+export default function DriverDashboard({ userId }: { userId: string }) {
   // Mock data - statistiques du chauffeur
   const stats = {
     totalTrips: 24,

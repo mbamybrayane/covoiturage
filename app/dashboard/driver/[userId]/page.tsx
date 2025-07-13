@@ -2,11 +2,11 @@
 
 import DriverDashboardClient from "./DriverDashboardClient";
 
-type PageProps = {
+interface PageProps {
   params: {
     userId: string;
   };
-};
+}
 
 export default function DriverDashboardPage({ params }: PageProps) {
   return <DriverDashboardClient userId={params.userId} />;
