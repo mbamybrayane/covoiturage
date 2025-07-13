@@ -32,10 +32,6 @@ import {
   Search,
 } from "lucide-react";
 
-interface PageParams {
-  userId: string;
-}
-
 export default function PassengerDashboard({ userId }: { userId: string }) {
   // Mock data - statistiques du passager
   const stats = {
