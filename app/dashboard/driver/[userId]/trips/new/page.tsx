@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -340,7 +339,9 @@ export default function CreateTripPage({
                       </div>
                       {/* Ville d'arrivée */}
                       <div className="relative" ref={arrivalRef}>
-                        <Label htmlFor="arrivalCity">Point d'arrivée</Label>
+                        <Label htmlFor="arrivalCity">
+                          Point d&apos;arrivée
+                        </Label>
                         <Input
                           id="arrivalCity"
                           placeholder="Yaoundé"
