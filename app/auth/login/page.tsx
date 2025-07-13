@@ -121,11 +121,6 @@ export default function LoginPage() {
               S'inscrire
             </Link>
           </div>
-
-          <div className="mt-4 text-xs text-gray-500 text-center">
-            <p>Demo : utilisez "driver@test.com" pour un compte chauffeur</p>
-            <p>ou "passenger@test.com" pour un compte passager</p>
-          </div>
         </CardContent>
       </Card>
     </div>
